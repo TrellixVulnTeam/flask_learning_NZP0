@@ -26,6 +26,7 @@ def index():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+
     form=LoginForm()
     if form.validate_on_submit():
         user=User.query.filter_by(username=form.username.data).first()
@@ -33,11 +34,11 @@ def login():
             flash('Invalid Username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index')
+        return redirect(url_for('index'))
     return render_template('login.html',title='Sign-in',form=form)
 
 
-@app.logout('/logout')
+@app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
